@@ -13,6 +13,8 @@ venv/
 # Local state
 memory/
 state/*.log
+state/viewed-posts.json
+logs/
 
 # IDE
 .vscode/

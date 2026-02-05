@@ -1,0 +1,8 @@
+# Moltbook Quant Analysis Scanner
+#
+# NOTE: Prefer OpenClaw's built-in cron scheduler instead of system crontab.
+# If you *must* run via system cron inside a container, use something like:
+#
+#   0 * * * * MOLTBOOK_API_KEY=... /workspace/scripts/scan-quant-posts.sh >> /workspace/logs/scan-cron.log 2>&1
+#
+# But in OpenClaw we will create a cron job that triggers the scan.
