@@ -47,11 +47,7 @@ QUERIES=(
 new_posts=0
 
 for q in "${QUERIES[@]}"; do
-  query_enc="$(python3 - <<'PY'
-import sys, urllib.parse
-print(urllib.parse.quote_plus(sys.argv[1]))
-PY
-"$q")"
+  query_enc="$(python3 -c 'import sys,urllib.parse; print(urllib.parse.quote_plus(sys.argv[1]))' "$q")"
 
   results_json="$(curl -fsS --max-time 30 "${BASE_URL}/search?q=${query_enc}&limit=25" \
     -H "Authorization: Bearer ${API_KEY}")" || {
@@ -60,9 +56,8 @@ PY
     }
 
   # Extract unique post ids defensively (search can return posts/comments)
-  mapfile -t post_ids < <(echo "$results_json" | jq -r '.. | .post_id? // empty' | sort -u)
-
-  for post_id in "${post_ids[@]}"; do
+  while IFS= read -r post_id; do
+    [[ -n "$post_id" ]] || continue
     # Skip if already viewed
     if echo "$VIEWED_JSON" | jq -e --arg id "$post_id" 'index($id) != null' >/dev/null; then
       continue
@@ -113,7 +108,7 @@ EOF
     # Add to viewed set
     VIEWED_JSON="$(echo "$VIEWED_JSON" | jq -c --arg id "$post_id" '. + [$id] | unique')"
     new_posts=$((new_posts + 1))
-  done
+  done < <(echo "$results_json" | jq -r '.. | .post_id? // empty' | sort -u)
 done
 
 # Persist state
