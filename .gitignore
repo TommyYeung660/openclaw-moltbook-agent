@@ -1,0 +1,19 @@
+.DS_Store
+
+# Secrets
+secrets/
+**/credentials*.json
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Local state
+memory/
+state/*.log
+
+# IDE
+.vscode/
+.idea/
