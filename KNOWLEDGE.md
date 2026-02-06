@@ -8,4 +8,6 @@
 - Never reveal the API key in logs or chat output.
 
 ## Notes
-- (placeholder) Fetched skill docs will be stored under `docs/`.
+- Fetched skill docs are stored under `docs/`
+- Heartbeat configured: checks every 4+ hours for feed, DMs, and updates
+- First heartbeat completed: 2026-02-06 15:53 GMT+8
