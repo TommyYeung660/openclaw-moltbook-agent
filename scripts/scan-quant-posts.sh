@@ -2,7 +2,7 @@
 set -euo pipefail
 
 # Moltbook Quant Analysis Auto-Scanner
-# - Reads Moltbook via the official API
+# - Reads Moltbook via official API
 # - Writes learning notes into memory/YYYY-MM-DD.md
 # - Tracks viewed post_ids in state/viewed-posts.json
 #
@@ -12,12 +12,22 @@ set -euo pipefail
 
 API_KEY="${MOLTBOOK_API_KEY:-}"
 BASE_URL="https://www.moltbook.com/api/v1"
-WORKSPACE="${WORKSPACE:-/workspace}"
+
+# Auto-detect workspace directory
+
+if [[ -n "${WORKSPACE:-}" && -d "$WORKSPACE" ]]; then
+  WORKSPACE="$WORKSPACE"
+elif [[ -d "/workspace" ]]; then
+  WORKSPACE="/workspace"
+else
+  WORKSPACE="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+fi
+
 STATE_FILE="$WORKSPACE/state/viewed-posts.json"
 MEMORY_DIR="$WORKSPACE/memory"
 LOG_DIR="$WORKSPACE/logs"
 TODAY="$(date +%Y-%m-%d)"
-NOW_HUMAN="$(date +%Y-%m-%d\ %H:%M:%S)"
+NOW_HUMAN="$(date '+%Y-%m-%d %H:%M:%S')"
 
 mkdir -p "$MEMORY_DIR" "$WORKSPACE/state" "$LOG_DIR"
 
@@ -49,7 +59,9 @@ new_posts=0
 for q in "${QUERIES[@]}"; do
   query_enc="$(python3 -c 'import sys,urllib.parse; print(urllib.parse.quote_plus(sys.argv[1]))' "$q")"
 
-  results_json="$(curl -fsS --max-time 30 "${BASE_URL}/search?q=${query_enc}&limit=25" \
+  # Retry a bit to reduce transient 429/timeout impact
+  results_json="$(curl -fsS --max-time 30 --retry 2 --retry-delay 2 --retry-all-errors \
+    "${BASE_URL}/search?q=${query_enc}&limit=25" \
     -H "Authorization: Bearer ${API_KEY}")" || {
       echo "[$(date)] Failed to fetch results for query: $q" >&2
       continue
@@ -63,16 +75,18 @@ for q in "${QUERIES[@]}"; do
       continue
     fi
 
-    post_json="$(curl -fsS --max-time 30 "${BASE_URL}/posts/${post_id}" \
+    post_json="$(curl -fsS --max-time 30 --retry 2 --retry-delay 2 --retry-all-errors \
+      "${BASE_URL}/posts/${post_id}" \
       -H "Authorization: Bearer ${API_KEY}")" || {
         echo "[$(date)] Failed to fetch post: $post_id" >&2
         continue
       }
 
-    title="$(echo "$post_json" | jq -r '.title // empty')"
-    author="$(echo "$post_json" | jq -r '.author.name // empty')"
-    upvotes="$(echo "$post_json" | jq -r '.upvotes // 0')"
-    content="$(echo "$post_json" | jq -r '.content // empty')"
+    # API returns {success: true, post: {...}}
+    title="$(echo "$post_json" | jq -r '.post.title // empty')"
+    author="$(echo "$post_json" | jq -r '.post.author.name // empty')"
+    upvotes="$(echo "$post_json" | jq -r '.post.upvotes // 0')"
+    content="$(echo "$post_json" | jq -r '.post.content // empty')"
 
     if [[ -z "$title" || -z "$author" ]]; then
       echo "[$(date)] Skipping post (missing title/author): $post_id" >&2
