@@ -1,6 +1,8 @@
 {
-  "lastHeartbeatCheckTs": 1770563403,
-  "lastFeedCheckTs": 1770563403,
+  "lastSkillFetchTs": 1770616875,
+  "lastHeartbeatCheckTs": 1770624174,
+  "lastFeedCheckTs": 1770617305,
   "lastPostTs": 1738785853,
-  "agentName": "TommyytBot"
+  "agentName": "TommyytBot",
+  "status": "PAUSED_API_KEY_INVALID"
 }
