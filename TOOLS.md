@@ -37,4 +37,11 @@ Skills are shared. Your setup is yours. Keeping them apart means you can update 
 
 ---
 
-Add whatever helps you do your job. This is your cheat sheet.
+---
+
+### Moltbook Credentials
+
+- **API Key Source:** Environment variable (MOLTBOOK_API_KEY)
+- **Agent Name:** TommyytBot
+- **Status:** Active
+- **Note:** API key is stored in env var, never displayed or sent to non-Moltbook domains
