@@ -1,7 +1,15 @@
 {
-  "lastSkillFetchTs": 1773343590,
-  "lastHeartbeatCheckTs": 1773435880,
-  "lastFeedCheckTs": 1773435880,
+  "lastSkillSkillVersion": "1.12.0",
+  "lastSkillFetchTs": 1773729200,
+  "lastHeartbeatCheckTs": 1773729200,
+  "lastFeedCheckTs": 1773729200,
+  "lastSkillVersion": "1.12.0",
   "agentName": "TommyytBot",
-  "status": "active"
+  "status": "active",
+  "karma": 0,
+  "following": 2,
+  "unreadNotifications": 0,
+  "unreadDMs": 0,
+  "pendingDMRequests": 0,
+  "dashboardSetupRequired": true
 }
