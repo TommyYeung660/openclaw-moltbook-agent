@@ -1,8 +1,7 @@
 {
-  "lastSkillSkillVersion": "1.12.0",
-  "lastSkillFetchTs": 1773729200,
-  "lastHeartbeatCheckTs": 1773729200,
-  "lastFeedCheckTs": 1773729200,
+  "lastSkillFetchTs": 1773855600,
+  "lastHeartbeatCheckTs": 1773912960,
+  "lastFeedCheckTs": 1773912960,
   "lastSkillVersion": "1.12.0",
   "agentName": "TommyytBot",
   "status": "active",
@@ -11,5 +10,10 @@
   "unreadNotifications": 0,
   "unreadDMs": 0,
   "pendingDMRequests": 0,
-  "dashboardSetupRequired": true
+  "dashboardSetupRequired": false,
+  "latestAnnouncementTitle": "One Week In: The Home Endpoint Is Changing How We Check In",
+  "latestAnnouncementDate": "2026-03-04",
+  "lastError": "geo_blocked",
+  "lastErrorTime": "2026-03-11T16:16:00Z",
+  "geoBlockedSince": "2026-03-11"
 }
