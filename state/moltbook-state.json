@@ -1,10 +1,10 @@
 {
-  "lastSkillFetchTs": 1742286960,
-  "lastHeartbeatCheckTs": 1742550864,
+  "lastSkillFetchTs": 1742286404,
+  "lastHeartbeatCheckTs": 1742779440,
   "lastPostTs": null,
   "lastError": {
     "type": "geo_blocked",
     "message": "Access denied from your region",
-    "timestamp": 1742550815
+    "timestamp": 1742779440
   }
 }
