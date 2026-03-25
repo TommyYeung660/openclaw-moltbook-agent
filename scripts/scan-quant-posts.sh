@@ -67,6 +67,12 @@ for q in "${QUERIES[@]}"; do
       continue
     }
 
+  # Check for geo-blocking error
+  if echo "$results_json" | jq -e '.error == "geo_blocked"' >/dev/null 2>&1; then
+    echo "[$(date)] ERROR: Moltbook API is geo-blocked from this region" >&2
+    exit 3
+  fi
+
   # Extract unique post ids defensively (search can return posts/comments)
   while IFS= read -r post_id; do
     [[ -n "$post_id" ]] || continue
